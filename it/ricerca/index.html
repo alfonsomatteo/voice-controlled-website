@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content="#212121"
+        name="theme-color">
+  <meta charset="UTF-8"><!-- <link rel="icon" type="image/x-icon" href="../../assets/img/favicon.png"> -->
+  <title>IFilm-search</title>
+  <meta content="width=device-width, initial-scale=1.0"
+        name="viewport">
+  <script src="../../assets/js/jquery.min.js"></script>
+  <script src="../../assets/js/common.script.js"></script>
+  <link href="../../assets/css/customstyle.css"
+        rel="stylesheet">
+  <link href="../../assets/css/m.style.css"
+        rel="stylesheet"
+        type="text/css">
+  <link href="../../assets/css/d2.style_1.css"
+        rel="stylesheet"
+        type="text/css">
+  <link href="../../assets/css/jquery.mCustomScrollbar.min.css"
+        rel="stylesheet"
+        type="text/css"><!-- JS file -->
+
+  <script src="../../bower_components/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+  <style>
+        .autocomplete-suggestions {
+            border: 1px solid #999;
+            background: #000000;
+            /*overflow: auto;*/
+        }
+        
+        .autocomplete-suggestion {
+            padding: 2px 5px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .autocomplete-selected {
+            background: #F0F0F0;
+            color: #000000;
+        }
+        
+        .autocomplete-suggestions strong {
+            font-weight: normal;
+            color: #3399FF;
+        }
+        
+        .autocomplete-group {
+            padding: 2px 5px;
+        }
+        
+        .autocomplete-group strong {
+            display: block;
+            border-bottom: 1px solid #000;
+        }
+  </style>
+  <style>
+        #info {
+            font-size: 20px;
+        }
+        /*  
+        #div_start {
+            float: right;
+        }
+      */
+        
+        #headline {
+            text-decoration: none
+        }
+        
+        #results {
+            font-size: 14px;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: left;
+            min-height: 150px;
+        }
+        
+        #start_button {
+            border: 0;
+            background-color: transparent;
+            padding: 0;
+            margin-top: 20px;
+        }
+        
+        .interim {
+            color: gray;
+        }
+        
+        .final {
+            color: black;
+            padding-right: 3px;
+        }
+        
+        .button {
+            display: none;
+        }
+        
+        .marquee {
+            margin: 20px auto;
+        }
+        
+        #buttons {
+            margin: 10px 0;
+            position: relative;
+            top: -50px;
+        }
+        
+        #copy {
+            margin-top: 20px;
+        }
+        
+        #copy>div {
+            display: none;
+            margin: 0 70px;
+        }
+        
+        #start_img {
+            width: 20px
+        }
+  </style>
+  <style>
+        a.c1 {
+            font-weight: normal;
+        }
+        .image-back {
+           overflow: hidden;
+        }
+
+        .btn-class{
+            background-color: #0BBBEF;
+            color: #000;
+            border-color:transparent;
+            display: inline-block;
+            width: calc(45% - 7px);
+            border-radius: 20px;
+            box-sizing: border-box;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+  </style>
+</head>
+<body class="sticky-footer internal_buddy">
+  <!-- modifcare nome classe-->
+  <div class="browser-landing"
+       id="main">
+    <div class="compact marquee">
+      <div id="info">
+        <p id="info_speak_now"
+           style="display:none">Parla ora.</p>
+        <p id="info_no_speech"
+           style="display:none">No speech was detected. You may need to adjust your <a href="https://support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone settings</a>.</p>
+        <p id="info_no_microphone"
+           style="display:none">No microphone was found. Ensure that a microphone is installed and that <a href="https://support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">microphone settings</a> are configured correctly.</p>
+        <p id="info_allow"
+           style="display:none">Click the "Allow" button above to enable your microphone.</p>
+        <p id="info_denied"
+           style="display:none">Permission to use microphone was denied.</p>
+        <p id="info_blocked"
+           style="display:none">Permission to use microphone is blocked. To change, go to chrome://settings/contentExceptions#media-stream</p>
+        <p id="info_upgrade"
+           style="display:none">Web Speech API is not supported by this browser. Upgrade to <a href="//www.google.com/chrome">Chrome</a> version 25 or later.</p>
+      </div>
+      <div class="compact marquee"
+           id="div_language"
+           style="display: none;">
+        <select id="select_language"
+             onchange="updateCountry()">
+        </select>&nbsp;&nbsp; <select id="select_dialect">
+        </select>
+      </div>
+    </div>
+  </div><!-- modifcare nome classe-->
+  <div class="b_wrapper">
+    <div class="iphone-container">
+      <div class="_table">
+        <div class="_cell">
+          <div class="iphone-inner-container">
+            <img class="iphone-frame"
+                 src="../../assets/img/frame/iPhone_mockup.png">
+            <div class="iphone-frame-top-bg"></div>
+            <div class="iphone-container-without-border">
+              <div class="iphone-inner-container-without-border">
+                <div id="header"></div>
+                <div id="header-menu-container"></div>
+                <div class="iphone-view">
+                  <div class="hp_iphone_inner_container">
+                    <div class="b_content mCustomScrollbar"
+                         data-mcs-theme="minimal">
+                      <div class="fullsize-block-bg fullsize-block-cards01 first-block">
+                        <div class="fullsize-block-bg-copy">
+                          <h2 class="fullsize-block-bg-title">Cerca un film</h2>
+                          <p class="fullsize-block-bg-sub">Puoi scrivere<br>
+                          oppure usa la voce</p>
+                          <div id="div_start">
+                            <button id="start_button"
+                                 onclick="startButton(event)"><img alt="Start"
+                                 id="start_img"
+                                 src="https://www.google.com/intl/en/chrome/assets/common/images/content/mic.gif"></button>
+                          </div>
+                          <div class="flip-container debit-card-flip not-for-ie flip-active-on-ready">
+                            <div class="phone-slider-wrapper"
+                                 id="filmFinder">
+                              <input class="textInput"
+                                   id="term"
+                                   placeholder="Find that film!"
+                                   type="text"> <!--div id="results">
+                                                                <span class="final" id="final_span"></span> <span class="interim" id="interim_span"></span>
+                                                            </div-->
+                              <ul id="suggestedTitles"></ul><input class="btn-style btn-class"
+                                   id="search"
+                                   type="submit"> <input class="btn-style btn-class"
+                                   id="again"
+                                   style="display: none;"
+                                   type="submit"
+                                   value="Again">
+                              <div class="hide"
+                                   id="poster"></div>
+                            </div>
+                            <div class="empty-div"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <script src="../../assets/js/d2.script.js"></script> 
+                      <script src="../../assets/js/jquery.mCustomScrollbar.concat.min.js"></script> 
+                      <script src="../../assets/js/indexsearch.js"></script> 
+                      <script src="../../assets/js/tts.js"></script>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
